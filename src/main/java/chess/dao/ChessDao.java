@@ -24,12 +24,11 @@ public class ChessDao {
         try (final var connection = ChessConnection.getConnection();
              final var prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.setInt(1, GAME_ID);
-            try (final var resultSet = prepareStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    count = Integer.parseInt(resultSet.getString(1));
-                }
-                return count != 0;
+            final var resultSet = prepareStatement.executeQuery();
+            if (resultSet.next()) {
+                count = Integer.parseInt(resultSet.getString(1));
             }
+            return count != 0;
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -102,17 +101,16 @@ public class ChessDao {
         try (final var connection = ChessConnection.getConnection();
              final var prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.setInt(1, GAME_ID);
-            try (final var resultSet = prepareStatement.executeQuery()) {
-                final Map<String, List<String>> boardData = new HashMap<>();
-                while (resultSet.next()) {
-                    boardData.put(resultSet.getString("position"),
-                            List.of(
-                                    resultSet.getString("piece_name"),
-                                    resultSet.getString("piece_color")
-                            ));
-                }
-                return boardData;
+            final var resultSet = prepareStatement.executeQuery();
+            final Map<String, List<String>> boardData = new HashMap<>();
+            while (resultSet.next()) {
+                boardData.put(resultSet.getString("position"),
+                        List.of(
+                                resultSet.getString("piece_name"),
+                                resultSet.getString("piece_color")
+                        ));
             }
+            return boardData;
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);
@@ -124,12 +122,11 @@ public class ChessDao {
         try (final var connection = ChessConnection.getConnection();
              final var prepareStatement = connection.prepareStatement(sql)) {
             prepareStatement.setInt(1, GAME_ID);
-            try (final var resultSet = prepareStatement.executeQuery()) {
-                if (resultSet.next()) {
-                    return resultSet.getString(1);
-                }
-                throw new SQLException("현재 순서의 색상을 조회할 수 없습니다.");
+            final var resultSet = prepareStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString(1);
             }
+            throw new SQLException("현재 순서의 색상을 조회할 수 없습니다.");
         } catch (SQLException e) {
             e.printStackTrace();
             throw new RuntimeException(e);

@@ -19,7 +19,7 @@ public enum PieceFactory {
     BLACK_KING(new King(Color.BLACK)),
     ;
 
-    private final Piece piece;
+    final Piece piece;
 
     PieceFactory(final Piece piece) {
         this.piece = piece;
